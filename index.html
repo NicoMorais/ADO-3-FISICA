@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10191d">
+  <meta name="description" content="Simulador interativo de colisões elásticas, impulso e conservação do momento linear — ADO-3 Física.">
+  <title>ADO-3 · Simulador de colisões</title>
+  <style>
+    :root{color-scheme:dark;--bg:#10191d;--panel:#182428;--panel2:#1e2d30;--line:#344448;--text:#edf2e9;--muted:#a2b0ab;--lime:#d7f36a;--blue:#83b9ff;--coral:#ff846b;--green:#c6e69b;--red:#ff887d;--shadow:0 16px 44px #06101288}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 8% 0%,#243537 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input{font:inherit}button{color:inherit}.shell{max-width:1360px;margin:auto;padding:24px clamp(16px,3vw,42px) 40px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:26px}.brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:.02em}.brand-mark{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--lime);color:#152024;font-size:17px;font-weight:900}.top-meta{font-size:12px;color:var(--muted);text-align:right}.hero{margin-bottom:23px}.eyebrow{color:var(--lime);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.hero h1{font-size:clamp(27px,4vw,44px);line-height:1.08;letter-spacing:-.045em;margin:8px 0 9px}.hero p{max-width:730px;color:var(--muted);margin:0}.hero strong{color:var(--text)}.layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(320px,.9fr);gap:17px;align-items:stretch}.card{background:linear-gradient(150deg,#1b292d,#172226);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.stage-card{padding:17px 18px 14px;min-height:390px}.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}.card-head h2,.section-title{font-size:14px;margin:0;letter-spacing:.01em}.tag{color:var(--muted);font-size:11px;border:1px solid var(--line);padding:5px 9px;border-radius:99px}.stage{position:relative;height:280px;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#172428,#1c2a2d 72%,#233338);border:1px solid #304044}.stage:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#dbe7d60d 1px,transparent 1px),linear-gradient(90deg,#dbe7d60b 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent)}.stage-label{position:absolute;left:16px;top:13px;color:#9eaeaa;font-size:11px;z-index:2}.axis{position:absolute;left:4%;right:4%;bottom:58px;height:2px;background:#657772}.axis:after{content:"";position:absolute;inset:-4px 0;background:linear-gradient(90deg,transparent,#81918a55 1px,transparent 1px);background-size:10% 100%}.block{position:absolute;bottom:60px;display:flex;align-items:center;justify-content:center;border:1px solid #ffffff8c;border-radius:7px 7px 3px 3px;box-shadow:0 11px 18px #07101375, inset 0 1px #ffffff55;color:#10191d;font-weight:900;transition:width .18s,height .18s;z-index:1}.block.one{background:var(--blue)}.block.two{background:var(--coral)}.block .mass-tag{position:absolute;top:-23px;color:#dce6df;font-size:10px;font-weight:650;white-space:nowrap}.velocity{position:absolute;bottom:17px;transform:translateX(-50%);font:11px ui-monospace,SFMono-Regular,Consolas,monospace;color:#c1cdc7;white-space:nowrap;z-index:2}.collision-flash{position:absolute;top:45px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:900;letter-spacing:.14em;color:var(--lime);opacity:0;transition:opacity .12s}.collision-flash.show{opacity:1}.no-collision{position:absolute;top:48px;left:50%;transform:translateX(-50%);background:#321f20dd;color:#ffb2a8;border:1px solid #805049;padding:7px 12px;border-radius:9px;font-size:12px;font-weight:750;white-space:nowrap;z-index:3}.stage-foot{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font:11px ui-monospace,SFMono-Regular,Consolas,monospace;padding:10px 3px 0}.readout{padding:19px;display:flex;flex-direction:column}.readout-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.live{display:flex;align-items:center;gap:7px;color:var(--green);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.1em}.live:before{content:"";width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}.columns{display:grid;grid-template-columns:1fr 1fr;gap:14px}.metric-group{border-top:1px solid var(--line);padding-top:10px}.metric-group h3{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin:0 0 7px}.metric{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;font-size:12px}.metric span:first-child{color:#aebbb5}.metric strong{font:600 12px ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right}.metric.primary strong{font-size:14px;color:var(--lime)}.divider{grid-column:1/-1;border:0;border-top:1px solid var(--line);width:100%;margin:1px 0}.notice{margin-top:auto;padding:11px 12px;border-radius:11px;background:#24332d;color:#cfdfc6;font-size:11px}.notice.warn{background:#382725;color:#ffc0b4}.lower{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,1fr);gap:17px;margin-top:17px}.controls,.charts{padding:18px}.controls-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:16px}.controls-top p{margin:3px 0 0;color:var(--muted);font-size:11px}.case-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}.case-option{position:relative}.case-option input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}.case-option label{display:block;padding:7px 10px;border:1px solid var(--line);border-radius:9px;color:#b4c0bb;font-size:11px;cursor:pointer;transition:.15s}.case-option input:checked+label{background:#d7f36a16;color:var(--lime);border-color:#8a9d43}.case-option input:focus-visible+label,button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-offset:2px}.sliders{display:grid;grid-template-columns:1fr 1fr;gap:13px 17px}.control{min-width:0}.control-label{display:flex;justify-content:space-between;gap:6px;font-size:11px;margin-bottom:5px}.control-label span:first-child{color:#bfcbc4}.control-label output{font:650 11px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--text)}input[type=range]{appearance:none;width:100%;height:4px;background:#3c4b4d;border-radius:9px;display:block;margin:8px 0 4px;accent-color:var(--lime)}input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;border-radius:50%;background:var(--lime);border:2px solid #172226;box-shadow:0 0 0 1px var(--lime);cursor:pointer}input[type=range]::-moz-range-thumb{width:11px;height:11px;border-radius:50%;background:var(--lime);border:2px solid #172226;box-shadow:0 0 0 1px var(--lime);cursor:pointer}.range-hint{display:flex;justify-content:space-between;color:#758681;font-size:9px}.actions{display:flex;gap:8px;margin-top:17px}.btn{border:1px solid var(--line);background:#243235;border-radius:9px;padding:8px 13px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}.btn:hover{background:#304246}.btn.primary{background:var(--lime);border-color:var(--lime);color:#152024}.btn.primary:hover{background:#e3fb8a}.btn:disabled{opacity:.45;cursor:not-allowed}.charts-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.chart{min-width:0;border:1px solid #304044;background:#152125;border-radius:12px;padding:10px 9px 6px}.chart h3{font-size:10px;margin:0;color:#d6dfd8}.chart-unit{color:#80918b;font-size:9px}.chart svg{display:block;width:100%;height:135px;overflow:visible}.legend{display:flex;gap:13px;font-size:9px;color:#9eaca6}.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}.legend .before{background:#66767a}.legend .after{background:var(--lime)}.formula{margin-top:11px;color:#899992;font-size:10px}.footer{display:flex;justify-content:space-between;gap:12px;margin-top:22px;color:#798984;font-size:10px}.footer a{color:#a7b5ae;text-decoration:none}.footer a:hover{color:var(--lime)}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.stage-card{min-height:0}.readout{min-height:280px}.lower{grid-template-columns:1fr}.charts-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.shell{padding:17px 13px 28px}.topbar{margin-bottom:19px}.top-meta{max-width:155px}.stage-card{padding:13px}.stage{height:230px}.axis{bottom:52px}.block{bottom:54px}.velocity{bottom:13px;font-size:9px}.stage-foot{font-size:9px}.readout{padding:15px}.columns{gap:9px}.metric{font-size:10px}.metric strong{font-size:10px}.metric.primary strong{font-size:12px}.lower{gap:12px}.controls,.charts{padding:14px}.sliders{gap:13px 12px}.case-option label{font-size:10px;padding:6px 8px}.charts-grid{gap:7px}.chart{padding:8px 5px}.chart svg{height:118px}.footer{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">A3</span><span>FÍSICA <span style="color:var(--lime)">/</span> LABORATÓRIO</span></div>
+      <div class="top-meta">ADO-3 · Práticas Extensivas<br>Colisões, impulso e momento linear</div>
+    </header>
+    <section class="hero">
+      <div class="eyebrow">Simulador interativo · Opção A</div>
+      <h1>Uma colisão.<br>As leis em movimento.</h1>
+      <p>Explore como massa e velocidade alteram o resultado de uma colisão elástica. <strong>Arraste os controles</strong> e observe a conservação do momento e da energia.</p>
+    </section>
+
+    <section class="layout" aria-label="Animação e resultados">
+      <article class="card stage-card">
+        <div class="card-head"><h2>01 — A colisão</h2><span class="tag" id="caseTag">Caso 1 · massas iguais</span></div>
+        <div class="stage" id="stage" aria-label="Animação dos dois blocos na pista">
+          <span class="stage-label">MOVIMENTO UNIDIMENSIONAL · x (m)</span>
+          <div class="collision-flash" id="collisionFlash">✦ CONTATO</div>
+          <div class="axis"></div>
+          <div class="block one" id="block1"><span>1</span><span class="mass-tag" id="massTag1"></span></div>
+          <div class="block two" id="block2"><span>2</span><span class="mass-tag" id="massTag2"></span></div>
+          <div class="velocity" id="velocity1"></div>
+          <div class="velocity" id="velocity2"></div>
+          <div class="no-collision" id="noCollision" hidden>Sem colisão · v₁ ≤ v₂</div>
+        </div>
+        <div class="stage-foot"><span id="timeReadout">t = 0,00 s</span><span id="collisionReadout">t<sub>c</sub> = —</span><span>MRU antes e depois</span></div>
+      </article>
+
+      <aside class="card readout" aria-live="polite">
+        <div class="readout-head"><h2 class="section-title">02 — Resultado da colisão</h2><span class="live">Ao vivo</span></div>
+        <div class="columns">
+          <div class="metric-group"><h3>Antes do choque</h3>
+            <div class="metric"><span>v₁</span><strong id="v1Value">—</strong></div>
+            <div class="metric"><span>v₂</span><strong id="v2Value">—</strong></div>
+            <div class="metric primary"><span>p total</span><strong id="pBefore">—</strong></div>
+            <div class="metric primary"><span>K total</span><strong id="kBefore">—</strong></div>
+          </div>
+          <div class="metric-group"><h3>Depois do choque</h3>
+            <div class="metric"><span>u₁</span><strong id="u1Value">—</strong></div>
+            <div class="metric"><span>u₂</span><strong id="u2Value">—</strong></div>
+            <div class="metric primary"><span>p total</span><strong id="pAfter">—</strong></div>
+            <div class="metric primary"><span>K total</span><strong id="kAfter">—</strong></div>
+          </div>
+          <hr class="divider">
+          <div class="metric-group"><h3>Variação</h3>
+            <div class="metric"><span>Δp</span><strong id="deltaP">—</strong></div>
+            <div class="metric"><span>ΔK</span><strong id="deltaK">—</strong></div>
+          </div>
+          <div class="metric-group"><h3>Impulso e contato</h3>
+            <div class="metric"><span>J₁</span><strong id="j1Value">—</strong></div>
+            <div class="metric"><span>J₂</span><strong id="j2Value">—</strong></div>
+            <div class="metric"><span>F média</span><strong id="forceValue">—</strong></div>
+            <div class="metric"><span>Δt contato</span><strong id="dtValue">—</strong></div>
+          </div>
+        </div>
+        <div class="notice" id="physicsNote">Os valores são calculados pelas fórmulas fechadas da colisão elástica.</div>
+      </aside>
+    </section>
+
+    <section class="lower" aria-label="Controles e gráficos">
+      <article class="card controls">
+        <div class="controls-top"><div><h2 class="section-title">03 — Ajuste o experimento</h2><p>Escolha um caso ou personalize os parâmetros.</p></div><span class="tag">SI · kg · m/s · ms</span></div>
+        <div class="case-list" role="radiogroup" aria-label="Casos padrão">
+          <div class="case-option"><input type="radio" name="case" id="case1" value="1" checked><label for="case1">1 · Massas iguais</label></div>
+          <div class="case-option"><input type="radio" name="case" id="case2" value="2"><label for="case2">2 · Projétil leve</label></div>
+          <div class="case-option"><input type="radio" name="case" id="case3" value="3"><label for="case3">3 · Projétil pesado</label></div>
+        </div>
+        <div class="sliders">
+          <div class="control"><label class="control-label" for="m1"><span>massa m₁</span><output id="m1Out">1,0 kg</output></label><input id="m1" type="range" min="0.5" max="6" step="0.1" value="1" aria-label="Massa do bloco um"><div class="range-hint"><span>0,5 kg</span><span>6 kg</span></div></div>
+          <div class="control"><label class="control-label" for="m2"><span>massa m₂</span><output id="m2Out">1,0 kg</output></label><input id="m2" type="range" min="0.5" max="6" step="0.1" value="1" aria-label="Massa do bloco dois"><div class="range-hint"><span>0,5 kg</span><span>6 kg</span></div></div>
+          <div class="control"><label class="control-label" for="v1"><span>velocidade v₁</span><output id="v1Out">+4,0 m/s</output></label><input id="v1" type="range" min="-5" max="10" step="0.1" value="4" aria-label="Velocidade inicial do bloco um"><div class="range-hint"><span>−5 m/s</span><span>10 m/s</span></div></div>
+          <div class="control"><label class="control-label" for="v2"><span>velocidade v₂</span><output id="v2Out">0,0 m/s</output></label><input id="v2" type="range" min="-5" max="10" step="0.1" value="0" aria-label="Velocidade inicial do bloco dois"><div class="range-hint"><span>−5 m/s</span><span>10 m/s</span></div></div>
+          <div class="control"><label class="control-label" for="dt"><span>duração do contato Δt</span><output id="dtOut">10 ms</output></label><input id="dt" type="range" min="1" max="100" step="1" value="10" aria-label="Duração do contato em milissegundos"><div class="range-hint"><span>1 ms</span><span>100 ms</span></div></div>
+        </div>
+        <div class="actions"><button class="btn primary" id="pauseBtn" type="button">Ⅱ &nbsp; Pausar</button><button class="btn" id="restartBtn" type="button">↺ &nbsp; Reiniciar</button></div>
+      </article>
+      <article class="card charts">
+        <div class="charts-head"><h2 class="section-title">04 — Conservação</h2><div class="legend"><span><i class="before"></i>Antes</span><span><i class="after"></i>Depois</span></div></div>
+        <div class="charts-grid">
+          <div class="chart"><h3>Momento linear <span class="chart-unit">kg·m/s</span></h3><svg id="momentChart" role="img" aria-label="Gráfico de barras do momento linear"></svg></div>
+          <div class="chart"><h3>Energia cinética <span class="chart-unit">J</span></h3><svg id="energyChart" role="img" aria-label="Gráfico de barras da energia cinética"></svg></div>
+        </div>
+        <p class="formula">Colisão elástica: p<sub>antes</sub> = p<sub>depois</sub> &nbsp;·&nbsp; K<sub>antes</sub> = K<sub>depois</sub></p>
+      </article>
+    </section>
+    <footer class="footer"><span>ADO-3 · Física: Práticas Extensivas · Opção A</span><span>Nicolas Morais · Vinicius Santos · Bruna Macruz</span><span><a href="RELATORIO_ADO3.pdf" download>Baixar relatório PDF</a> &nbsp;·&nbsp; <a href="ADO3_Nicolas_Vinicius_Bruna.py" download>Baixar código Python</a></span></footer>
+  </main>
+  <script>
+  (()=>{
+    'use strict';
+    const $=id=>document.getElementById(id);
+    const initial={m1:1,m2:1,v1:4,v2:0,dt:10};
+    const cases={1:{...initial,name:'Caso 1 · massas iguais'},2:{m1:1,m2:4,v1:5,v2:0,dt:10,name:'Caso 2 · projétil leve'},3:{m1:4,m2:1,v1:5,v2:0,dt:10,name:'Caso 3 · projétil pesado'}};
+    const state={...initial,t:0,paused:false,finished:false,result:null,caseName:cases[1].name,lastTime:0};
+    const num=(x,d=2,signed=false)=>{if(Math.abs(x)<.5*10**(-d))x=0;return new Intl.NumberFormat('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d,signDisplay:signed?'always':'auto'}).format(x)};
+    const half=m=>.35*Math.cbrt(m), height=m=>.50*Math.cbrt(m);
+    function solve(){
+      const {m1,m2,v1,v2,dt}=state;
+      state.t=0;state.paused=false;state.finished=false;state.lastTime=0;$('pauseBtn').disabled=false;$('pauseBtn').innerHTML='Ⅱ &nbsp; Pausar';
+      const gap=6-half(m1)-half(m2), relative=v1-v2;
+      const tc=gap<=0?0:(relative>0?gap/relative:null), collision=tc!==null;
+      const u1=collision?((m1-m2)*v1+2*m2*v2)/(m1+m2):v1;
+      const u2=collision?((m2-m1)*v2+2*m1*v1)/(m1+m2):v2;
+      const p0=m1*v1+m2*v2,p1=m1*u1+m2*u2;
+      const k0=.5*m1*v1*v1+.5*m2*v2*v2,k1=.5*m1*u1*u1+.5*m2*u2*u2;
+      const j1=collision?m1*(u1-v1):0,j2=collision?m2*(u2-v2):0;
+      state.result={m1,m2,v1,v2,u1,u2,dt,tc,collision,p0,p1,k0,k1,j1,j2,force:Math.abs(j1)/(dt/1000)};
+      updateReadout();drawScene();drawCharts();
+    }
+    function setText(id,text){$(id).textContent=text}
+    function updateReadout(){
+      const r=state.result;
+      setText('v1Value',`${num(r.v1,2,true)} m/s`);setText('v2Value',`${num(r.v2,2,true)} m/s`);
+      setText('u1Value',`${num(r.u1,2,true)} m/s`);setText('u2Value',`${num(r.u2,2,true)} m/s`);
+      setText('pBefore',`${num(r.p0,3,true)} kg·m/s`);setText('pAfter',`${num(r.p1,3,true)} kg·m/s`);
+      setText('kBefore',`${num(r.k0,3)} J`);setText('kAfter',`${num(r.k1,3)} J`);
+      setText('deltaP',`${num(r.p1-r.p0,3,true)} kg·m/s`);setText('deltaK',`${num(r.k1-r.k0,3,true)} J`);
+      setText('j1Value',`${num(r.j1,3,true)} N·s`);setText('j2Value',`${num(r.j2,3,true)} N·s`);
+      setText('forceValue',`${num(r.force,1)} N`);setText('dtValue',`${num(r.dt,0)} ms`);
+      setText('caseTag',state.caseName);setText('collisionReadout',r.collision?`t₍c₎ = ${num(r.tc,3)} s`:'sem contato');
+      const note=$('physicsNote');
+      if(!r.collision){note.textContent='Não haverá colisão: v₁ ≤ v₂. Os blocos mantêm as velocidades iniciais e o impulso é nulo.';note.classList.add('warn')}
+      else{note.classList.remove('warn');note.textContent=Math.abs(r.m1-r.m2)<1e-9?'Massas iguais: os blocos trocam velocidades. Momento e energia cinética se conservam.':r.u1<0?'m₁ < m₂: o bloco 1 inverte o sentido (u₁ < 0). Momento e energia se conservam.':'m₁ > m₂: o bloco 1 segue em frente. Momento e energia se conservam.'}
+      $('noCollision').hidden=r.collision;
+    }
+    function valueAt(t,x0,v,u,tc){return tc===null||t<=tc?x0+v*t:x0+v*tc+u*(t-tc)}
+    function sceneTime(){return state.t}
+    function drawScene(){
+      const r=state.result,t=sceneTime(),stage=$('stage'),w=stage.clientWidth;
+      const x1=valueAt(t,2,r.v1,r.u1,r.tc),x2=valueAt(t,8,r.v2,r.u2,r.tc);
+      const left=Math.min(x1-half(r.m1),x2-half(r.m2),0)-.35;
+      const right=Math.max(x1+half(r.m1),x2+half(r.m2),10.5)+.35;
+      const span=right-left,plotLeft=w*.055,plotWidth=w*.89;
+      const px=x=>plotLeft+(x-left)/span*plotWidth;
+      const block=(id,tagId,x,m,v,velId)=>{
+        const el=$(id),width=Math.max(18,2*half(m)/span*plotWidth),h=Math.max(23,height(m)/1.6*100);
+        el.style.width=`${width}px`;el.style.height=`${h}px`;el.style.left=`${px(x)-width/2}px`;
+        setText(tagId,`${num(m,1)} kg`);
+        const vel=$(velId);vel.style.left=`${px(x)}px`;setText(velId,`v = ${num(v,2,true)} m/s`);
+      };
+      let v1=r.v1,v2=r.v2;if(r.tc!==null&&t>r.tc){v1=r.u1;v2=r.u2}
+      block('block1','massTag1',x1,r.m1,v1,'velocity1');block('block2','massTag2',x2,r.m2,v2,'velocity2');
+      setText('timeReadout',`t = ${num(t,2)} s`);
+      $('collisionFlash').classList.toggle('show',r.collision&&Math.abs(t-r.tc)<.035);
+    }
+    function drawChart(svgId,a,b,unit){
+      const svg=$(svgId),W=260,H=135,top=14,bottom=106,base=bottom,vals=[a,b];
+      const max=Math.max(1e-8,...vals.map(Math.abs)),range=max*1.28;
+      const y0=base-(0+range)/(2*range)*(bottom-top);
+      const coord=v=>base-(v+range)/(2*range)*(bottom-top);
+      let html=`<line x1="18" y1="${y0}" x2="246" y2="${y0}" stroke="#667772" stroke-width="1"/>`;
+      for(const yv of [-range,0,range]){const y=coord(yv);html+=`<line x1="20" y1="${y}" x2="245" y2="${y}" stroke="#344448" stroke-width=".7"/><text x="17" y="${y+3}" fill="#82928c" text-anchor="end" font-size="8">${num(yv,Math.abs(yv)<1?1:0)}</text>`}
+      const xs=[84,178],colors=['#66767a','#d7f36a'];
+      vals.forEach((v,i)=>{const y=coord(v),heightBar=Math.abs(y-y0),rectY=Math.min(y,y0);html+=`<rect x="${xs[i]-22}" y="${rectY}" width="44" height="${Math.max(1,heightBar)}" rx="4" fill="${colors[i]}"/><text x="${xs[i]}" y="${v>=0?rectY-5:rectY+heightBar+11}" fill="#e6eee7" text-anchor="middle" font-size="9" font-weight="700">${num(v,2)}</text><text x="${xs[i]}" y="126" fill="#9eaca6" text-anchor="middle" font-size="9">${i?'depois':'antes'}</text>`});
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=html;svg.setAttribute('aria-label',`Valores antes ${num(a,2)} ${unit}, depois ${num(b,2)} ${unit}`);
+    }
+    function drawCharts(){const r=state.result;drawChart('momentChart',r.p0,r.p1,'kg·m/s');drawChart('energyChart',r.k0,r.k1,'J')}
+    function updateOutputs(){for(const key of ['m1','m2'])setText(`${key}Out`,`${num(state[key],1)} kg`);for(const key of ['v1','v2'])setText(`${key}Out`,`${num(state[key],1,true)} m/s`);setText('dtOut',`${num(state.dt,0)} ms`)}
+    function readInputs(){for(const key of ['m1','m2','v1','v2','dt'])state[key]=Number($(key).value);state.caseName='Personalizado';document.querySelectorAll('input[name="case"]').forEach(x=>x.checked=false);updateOutputs();solve()}
+    function applyCase(n){const c=cases[n];Object.assign(state,c);for(const key of ['m1','m2','v1','v2','dt'])$(key).value=state[key];state.caseName=c.name;updateOutputs();solve()}
+    ['m1','m2','v1','v2','dt'].forEach(id=>$(id).addEventListener('input',readInputs));
+    document.querySelectorAll('input[name="case"]').forEach(el=>el.addEventListener('change',()=>applyCase(Number(el.value))));
+    $('pauseBtn').addEventListener('click',()=>{state.paused=!state.paused;$('pauseBtn').innerHTML=state.paused?'▶ &nbsp; Continuar':'Ⅱ &nbsp; Pausar';if(!state.paused)state.lastTime=0});
+    $('restartBtn').addEventListener('click',()=>{state.t=0;state.paused=false;state.finished=false;state.lastTime=0;$('pauseBtn').disabled=false;$('pauseBtn').innerHTML='Ⅱ &nbsp; Pausar';drawScene()});
+    function frame(now){if(!state.paused){if(state.lastTime){const elapsed=Math.min((now-state.lastTime)/1000,.05);let nextTime=state.t+elapsed;if(state.result.collision&&state.t<state.result.tc&&nextTime>state.result.tc)nextTime=state.result.tc;const duration=state.result.collision?state.result.tc+1.2:2.5;if(nextTime>=duration){state.t=duration;state.paused=true;state.finished=true;$('pauseBtn').disabled=true;$('pauseBtn').innerHTML='✓ &nbsp; Concluída'}else state.t=nextTime}state.lastTime=now;drawScene()}requestAnimationFrame(frame)}
+    window.addEventListener('resize',drawScene);
+    updateOutputs();solve();requestAnimationFrame(frame);
+  })();
+  </script>
+</body>
+</html>
